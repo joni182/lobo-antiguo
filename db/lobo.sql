@@ -96,3 +96,50 @@ CREATE TABLE tratamientos
     , created_at     timestamp DEFAULT localtimestamp
     , updated_at     timestamp
 );
+
+DROP TABLE IF EXISTS enfermedades CASCADE;
+
+CREATE TABLE enfermedades
+(
+      id bigserial PRIMARY KEY
+    , nombre varchar(255) NOT NULL UNIQUE
+    , descripcion text
+);
+
+DROP TABLE IF EXISTS vacunas CASCADE;
+
+CREATE TABLE vacunas
+(
+      id bigserial PRIMARY KEY
+    , nombre varchar(255) NOT NULL UNIQUE
+);
+
+DROP TABLE IF EXISTS vacunas_enfermedades CASCADE;
+
+CREATE TABLE vacunas_enfermedades
+(
+      vacuna_id bigint REFERENCES vacunas(id)
+    , enfermedad_id bigint REFERENCES enfermedades(id)
+    , PRIMARY KEY(vacuna_id,enfermedad_id)
+);
+
+DROP TABLE IF EXISTS animales_vacunas CASCADE;
+
+CREATE TABLE animales_vacunas
+(
+      animal_id bigint REFERENCES animales(id)
+    , vacuna_id bigint REFERENCES vacunas(id)
+    , fecha date
+    , PRIMARY KEY(vacuna_id,animal_id)
+);
+
+DROP TABLE IF EXISTS vacunaciones CASCADE;
+
+CREATE TABLE vacunaciones
+(
+      id bigserial PRIMARY KEY
+    , animal_id bigint REFERENCES animales(id)
+    , vacuna_id bigint REFERENCES vacunas(id)
+    , clinica_id bigint REFERENCES clinicas(id)
+    , fecha_hora timestamp
+);
