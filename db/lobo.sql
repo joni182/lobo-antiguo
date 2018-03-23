@@ -127,7 +127,7 @@ CREATE TABLE vacunas_enfermedades
 
 DROP TABLE IF EXISTS animales_vacunas CASCADE;
 
-CREATE TABLE animales_vacunas
+CREATE TABLE vacunas_animales
 (
       animal_id bigint REFERENCES animales(id)
                        ON DELETE NO ACTION ON UPDATE CASCADE
@@ -153,7 +153,7 @@ CREATE TABLE vacunaciones
 
 DROP TABLE IF EXISTS animales_enfermedades CASCADE;
 
-CREATE TABLE animales_enfermedades
+CREATE TABLE enfermedades_animales
 (
       animal_id bigint REFERENCES animales(id)
     , enfermedad_id bigint REFERENCES enfermedades(id)
