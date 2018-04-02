@@ -14,15 +14,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'raza_id')->textInput() ?>
+    <?= $form->field($model->raza, 'nombre')->textInput() ?>
 
-    <?= $form->field($model, 'especie_id')->textInput() ?>
+    <?= $form->field($model->especie, 'nombre')->textInput() ?>
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

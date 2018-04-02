@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "animales".
  *
@@ -64,7 +62,7 @@ class Animales extends \yii\db\ActiveRecord
             'especie_id' => 'Especie ID',
             'chip' => 'Chip',
             'observaciones' => 'Observaciones',
-            'created_at' => 'Created At',
+            'created_at' => 'Registrado',
         ];
     }
 
