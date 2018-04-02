@@ -40,6 +40,8 @@ CREATE TABLE animales
     , especie_id    bigint       NOT NULL REFERENCES especies(id)
                                  ON DELETE NO ACTION ON UPDATE CASCADE
     , chip          varchar(255) UNIQUE
+    , sexo          varchar(1)   CONSTRAINT ck_sexo_valido
+                                 CHECK (sexo = 'h' OR sexo = 'm')
     , observaciones text
     , created_at timestamp DEFAULT localtimestamp
 );
@@ -90,6 +92,7 @@ CREATE TABLE tratamientos
                                ON DELETE NO ACTION ON UPDATe CASCADE
     , veterinario_id bigint    REFERENCES veterinarios(id)
                                ON DELETE NO ACTION ON UPDATE CASCADE
+    , pauta          varchar(255)
     , fecha_inicio   date      NOT NULL
     , duracion       interval  NOT NULL
     , observaciones  text
@@ -110,8 +113,9 @@ DROP TABLE IF EXISTS vacunas CASCADE;
 
 CREATE TABLE vacunas
 (
-      id     bigserial    PRIMARY KEY
-    , nombre varchar(255) NOT NULL UNIQUE
+      id            bigserial    PRIMARY KEY
+    , nombre        varchar(255) NOT NULL UNIQUE
+    , observaciones text
 );
 
 DROP TABLE IF EXISTS vacunas_enfermedades CASCADE;
@@ -125,7 +129,7 @@ CREATE TABLE vacunas_enfermedades
     , PRIMARY KEY(vacuna_id,enfermedad_id)
 );
 
-DROP TABLE IF EXISTS animales_vacunas CASCADE;
+DROP TABLE IF EXISTS vacunas_animales CASCADE;
 
 CREATE TABLE vacunas_animales
 (
@@ -151,7 +155,7 @@ CREATE TABLE vacunaciones
     , fecha_hora timestamp
 );
 
-DROP TABLE IF EXISTS animales_enfermedades CASCADE;
+DROP TABLE IF EXISTS enfermedades_animales CASCADE;
 
 CREATE TABLE enfermedades_animales
 (
@@ -162,3 +166,5 @@ CREATE TABLE enfermedades_animales
     , duracion       interval  NOT NULL
     , PRIMARY KEY(animal_id,enfermedad_id)
 );
+
+-- TODO pensar en
