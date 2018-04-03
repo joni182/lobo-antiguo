@@ -40,8 +40,8 @@ CREATE TABLE animales
     , especie_id    bigint       NOT NULL REFERENCES especies(id)
                                  ON DELETE NO ACTION ON UPDATE CASCADE
     , chip          varchar(255) UNIQUE
-    , sexo          varchar(1)   CONSTRAINT ck_sexo_valido
-                                 CHECK (sexo = 'h' OR sexo = 'm')
+    , sexo          varchar(6)   CONSTRAINT ck_sexo_valido
+                                 CHECK (sexo = 'Hembra' OR sexo = 'Macho')
     , observaciones text
     , created_at timestamp DEFAULT localtimestamp
 );

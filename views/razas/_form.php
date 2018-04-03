@@ -1,5 +1,8 @@
 <?php
 
+use app\models\Especies;
+
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -14,10 +17,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'especie_id')->textInput() ?>
+    <?= $form->field($model, 'especie_id')
+        ->dropDownList(Especies::nombres())
+        ->label('Especie')
+    ?>
+    <?= Html::a('Añadir Especie', Url::to(['especies/create']), ['class' => 'btn btn-info']) ?>
+
+    <br><br>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

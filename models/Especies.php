@@ -33,6 +33,14 @@ class Especies extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function nombres()
+    {
+        return self::find()
+            ->select('nombre')
+            ->indexBy('id')
+            ->column();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,14 +50,6 @@ class Especies extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
         ];
-    }
-    /**
-     * Método que devuelve un array todas las filas de la tabla Especies.
-     * @return array ids como clave y los nombres como valor.
-     */
-    public static function nombres()
-    {
-        $nombres = Especies::->find()->select('id');
     }
 
     /**

@@ -1,11 +1,35 @@
 <?php
 
+use app\models\Razas;
+use app\models\Especies;
+
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Animales */
 /* @var $form yii\widgets\ActiveForm */
+$url = Url::to(['razas/nombres-ajax']);
+$js = <<<EOT
+    function formarSelect(result){
+        $('#animales-raza_id').empty();
+        for(key in result){;
+            $('#animales-raza_id').append("<option value='"+key+"'>"+result[key]+"</option>")
+        }
+    }
+    function peticion(){
+        $.getJSON('$url',  {'especie_id': $('#animales-especie_id').prop('selectedIndex')+1}, function(result){
+            formarSelect(result);
+        });
+    };
+    $(document).ready(function(){
+        $('#animales-especie_id').on('change', peticion);
+        peticion();
+    });
+EOT;
+
+$this->registerJs($js);
 ?>
 
 <div class="animales-form">
@@ -14,16 +38,29 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model->raza, 'nombre')->textInput() ?>
+    <?= $form->field($model, 'sexo')
+        ->dropDownList(
+            [
+                'Hembra' => 'Hembra',
+                'Macho' => 'Macho',
+            ]
+        )
+    ?>
 
-    <?= $form->field($model->especie, 'nombre')->textInput() ?>
+    <?= $form->field($model, 'especie_id')
+        ->dropDownList(Especies::nombres())
+        ->label('Especie')
+    ?>
+    <?= Html::a('Añadir Especie', Url::to(['especies/create']), ['class' => 'btn btn-info']) ?>
+    
+    <?= $form->field($model, 'raza_id')->dropDownList([])->label('Raza') ?>
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

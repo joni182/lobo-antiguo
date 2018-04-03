@@ -42,7 +42,7 @@ class Animales extends \yii\db\ActiveRecord
             [['raza_id', 'especie_id'], 'default', 'value' => null],
             [['raza_id', 'especie_id'], 'integer'],
             [['observaciones'], 'string'],
-            [['created_at'], 'safe'],
+            [['created_at', 'sexo'], 'safe'],
             [['nombre', 'chip'], 'string', 'max' => 255],
             [['chip'], 'unique'],
             [['especie_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_id' => 'id']],
