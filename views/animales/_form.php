@@ -17,6 +17,9 @@ $js = <<<EOT
         for(key in result){;
             $('#animales-raza_id').append("<option value='"+key+"'>"+result[key]+"</option>")
         }
+        if ($('#animales-raza_id').children().length == 0){
+            $('#animales-raza_id').append("<option>No hay razas registradas</option>")
+        }
     }
     function peticion(){
         $.getJSON('$url',  {'especie_id': $('#animales-especie_id').prop('selectedIndex')+1}, function(result){
@@ -51,8 +54,7 @@ $this->registerJs($js);
         ->dropDownList(Especies::nombres())
         ->label('Especie')
     ?>
-    <?= Html::a('Añadir Especie', Url::to(['especies/create']), ['class' => 'btn btn-info']) ?>
-    
+
     <?= $form->field($model, 'raza_id')->dropDownList([])->label('Raza') ?>
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>

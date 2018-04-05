@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Animales;
 
 /**
  * AnimalesSearch represents the model behind the search form of `app\models\Animales`.
@@ -19,7 +17,7 @@ class AnimalesSearch extends Animales
     {
         return [
             [['id', 'raza_id', 'especie_id'], 'integer'],
-            [['nombre', 'chip', 'observaciones', 'created_at'], 'safe'],
+            [['nombre', 'chip', 'sexo', 'observaciones', 'created_at'], 'safe'],
         ];
     }
 
@@ -33,7 +31,7 @@ class AnimalesSearch extends Animales
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -67,6 +65,7 @@ class AnimalesSearch extends Animales
 
         $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
             ->andFilterWhere(['ilike', 'chip', $this->chip])
+            ->andFilterWhere(['ilike', 'sexo', $this->sexo])
             ->andFilterWhere(['ilike', 'observaciones', $this->observaciones]);
 
         return $dataProvider;

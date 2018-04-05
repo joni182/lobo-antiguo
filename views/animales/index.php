@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Registrar Especie', ['especies/create'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Registrar Raza', ['razas/create'], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <?= GridView::widget([
