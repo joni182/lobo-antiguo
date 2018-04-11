@@ -17,8 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Registrar Especie', ['especies/create'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Registrar Raza', ['razas/create'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Registrar Especie y Raza', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= GridView::widget([
@@ -26,12 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'nombre',
-            'raza.nombre:text:Raza',
             'especie.nombre:text:Especie',
+            'raza.nombre:text:Raza',
             'sexo',
+            'peso:weight',
+            'ppp:boolean',
             'chip',
-            //'observaciones:ntext',
-            //'created_at',
+            'observaciones:ntext',
+            'created_at:datetime',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

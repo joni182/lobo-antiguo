@@ -16,7 +16,20 @@ class AnimalesSearch extends Animales
     public function rules()
     {
         return [
-            [['nombre', 'raza.nombre', 'especie.nombre', 'chip', 'sexo', 'observaciones', 'created_at'], 'safe'],
+            [
+                [
+                    'nombre',
+                    'raza.nombre',
+                    'especie.nombre',
+                    'chip',
+                    'sexo',
+                    'peso',
+                    'ppp',
+                    'observaciones',
+                    'created_at'
+                ],
+                
+                'safe'],
         ];
     }
 
@@ -73,11 +86,13 @@ class AnimalesSearch extends Animales
         // grid filtering conditions
         $query->andFilterWhere([
             'created_at' => $this->created_at,
+            'ppp' => $this->ppp,
         ]);
 
         $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
             ->andFilterWhere(['ilike', 'r.nombre', $this->getAttribute('raza.nombre')])
             ->andFilterWhere(['ilike', 'e.nombre', $this->getAttribute('especie.nombre')])
+            ->andFilterWhere(['ilike', 'peso', $this->peso])
             ->andFilterWhere(['ilike', 'chip', $this->chip])
             ->andFilterWhere(['ilike', 'sexo', $this->sexo])
             ->andFilterWhere(['ilike', 'observaciones', $this->observaciones]);

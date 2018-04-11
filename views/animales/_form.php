@@ -57,6 +57,10 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'raza_id')->dropDownList([])->label('Raza') ?>
 
+    <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'ppp')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>

@@ -64,6 +64,8 @@ class RazasController extends Controller
         }
     }
 
+
+
     /**
      * Creates a new Razas model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -71,15 +73,25 @@ class RazasController extends Controller
      */
     public function actionCreate()
     {
+        $this->layout = false;
         $model = new Razas();
+        $searchModel = new RazasSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->render('index', [
+                 'searchModel' => $searchModel,
+                 'dataProvider' => $dataProvider,
+             ]);
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('index', [
+             'searchModel' => $searchModel,
+             'dataProvider' => $dataProvider,
+         ]);
     }
 
     /**

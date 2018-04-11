@@ -39,6 +39,8 @@ CREATE TABLE animales
                                  ON DELETE NO ACTION ON UPDATE CASCADE
     , especie_id    bigint       NOT NULL REFERENCES especies(id)
                                  ON DELETE NO ACTION ON UPDATE CASCADE
+    , peso          numeric(4,2)
+    , ppp           boolean      DEFAULT false
     , chip          varchar(255) UNIQUE
     , sexo          varchar(6)   CONSTRAINT ck_sexo_valido
                                  CHECK (sexo = 'Hembra' OR sexo = 'Macho')
