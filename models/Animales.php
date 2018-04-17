@@ -38,12 +38,15 @@ class Animales extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['peso'], 'filter', 'filter' => function ($value) {
+                return str_replace(',', '.', $value);
+            }],
             [['nombre', 'raza_id', 'especie_id'], 'required'],
-            [['raza_id', 'especie_id'], 'default', 'value' => null],
+            [['raza_id', 'especie_id', 'chip', 'ppp'], 'default'],
             [['raza_id', 'especie_id'], 'integer'],
             [['ppp'], 'boolean'],
             [['observaciones'], 'string'],
-            [['created_at', 'sexo', 'peso'], 'safe'],
+            [['sexo', 'peso', 'created_at'], 'safe'],
             [['nombre', 'chip'], 'string', 'max' => 255],
             [['chip'], 'unique'],
             [['especie_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_id' => 'id']],

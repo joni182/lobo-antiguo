@@ -59,7 +59,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ppp')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'ppp')->dropdownList([0 => 'No', 1 => 'Sí'])->label('PPP') ?>
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
 
