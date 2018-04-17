@@ -2,6 +2,9 @@
 
 use yii\grid\GridView;
 
+use yii\helpers\Url;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RazasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,9 +20,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'nombre',
+            'nombre:text:Raza',
             'especie.nombre:text:Especie',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                    'class' => 'yii\grid\ActionColumn',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                        return Html::a('Ver',Url::to(['razas/view','id'=> $model->id]),['class' => 'btn btn-xs btn-success']);
+                        },
+                        'update' => function ($url, $model, $key) {
+                        return Html::a('Mod',Url::to(['razas/update','id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
+                        },
+                        'delete' => function ($url, $model, $key) {
+                        return Html::a('Borrar',Url::to(['razas/delete','id'=> $model->id]),['class' => 'btn btn-xs btn-danger']);
+                        },
+                    ],
+            ],
         ],
     ]); ?>
 </div>
