@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'nombre',
             'raza.nombre:text:Raza',
             'especie.nombre:text:Especie',
-            'peso',
+            'peso:weight',
             'sexo',
             'chip',
             'ppp:boolean:PPP',
