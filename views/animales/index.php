@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -34,7 +35,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'observaciones:ntext',
             'created_at:datetime',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                    'class' => 'yii\grid\ActionColumn',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                        return Html::a('Ver',Url::to(['animales/view','id'=> $model->id]),['class' => 'btn btn-xs btn-success']);
+                        },
+                        'update' => function ($url, $model, $key) {
+                        return Html::a('Mod',Url::to(['animales/update','id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
+                        },
+                        'delete' => function ($url, $model, $key) {
+                        return Html::a('Borrar',Url::to(['animales/delete','id'=> $model->id]),['class' => 'btn btn-xs btn-danger']);
+                        },
+                    ],
+            ],
         ],
     ]); ?>
 </div>

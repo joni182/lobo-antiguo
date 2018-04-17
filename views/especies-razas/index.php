@@ -83,14 +83,49 @@ $this->params['breadcrumbs'][] = $this->title;
         <br>
         <div class="visualizar-especies">
 
+        <?php
+
+            $actionColumn = [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                        return Html::a('Ver',Url::to([$url,'id'=> $model->id]),['class' => 'btn btn-xs btn-success']);
+                        },
+                        'update' => function ($url, $model, $key) {
+                        return Html::a('Mod',Url::to([$url,'id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
+                        },
+                        'delete' => function ($url, $model, $key) {
+                        return Html::a('Borrar',Url::to([$url,'id'=> $model->id]),['class' => 'btn btn-xs btn-danger']);
+                        },
+                    ],
+                ];
+
+            //$actionColumn['buttons']['view']('especies/view');
+            //$actionColumn['buttons']['update']('especies/update');
+            //$actionColumn['buttons']['delete']('especies/delete');
+
+        ?>
+
             <?= GridView::widget([
                 'dataProvider' => $especieDataProvider,
                 'filterModel' => $especieSearchModel,
                 'columns' => [
-
                     'nombre:text:Especie',
-
-                    ['class' => 'yii\grid\ActionColumn'],
+                    [
+                            'class' => 'yii\grid\ActionColumn',
+                            'buttons' => [
+                                'view' => function ($url, $model, $key) {
+                                return Html::a('Ver',Url::to(['especies/view','id'=> $model->id]),['class' => 'btn btn-xs btn-success']);
+                                },
+                                'update' => function ($url, $model, $key) {
+                                return Html::a('Mod',Url::to(['especies/update','id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
+                                },
+                                'delete' => function ($url, $model, $key) {
+                                return Html::a('Borrar',Url::to(['especies/delete','id'=> $model->id]),['class' => 'btn btn-xs btn-danger']);
+                                },
+                            ],
+                        ],
                 ],
             ]); ?>
         </div>
@@ -114,8 +149,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     'nombre:text:Raza',
                     'especie.nombre:text:Especie',
-                    ['class' => 'yii\grid\ActionColumn'],
-                ],
+                    [
+                            'class' => 'yii\grid\ActionColumn',
+                            'buttons' => [
+                                'view' => function ($url, $model, $key) {
+                                return Html::a('Ver',Url::to(['razas/view','id'=> $model->id]),['class' => 'btn btn-xs btn-success']);
+                                },
+                                'update' => function ($url, $model, $key) {
+                                return Html::a('Mod',Url::to(['razas/update','id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
+                                },
+                                'delete' => function ($url, $model, $key) {
+                                return Html::a('Borrar',Url::to(['razas/delete','id'=> $model->id]),['class' => 'btn btn-xs btn-danger']);
+                                },
+                            ],
+                        ],
+                    ],
             ]); ?>
 
         </div>
