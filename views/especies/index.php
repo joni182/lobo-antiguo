@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('Mod',Url::to(['especies/update','id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
                         },
                         'delete' => function ($url, $model, $key) {
-                        return Html::a('Borrar',Url::to(['especies/delete','id'=> $model->id]),['class' => 'btn btn-xs btn-danger']);
+                        return Html::a('Borrar',Url::to(['especies/delete','id'=> $model->id]),[
+                            'class' => 'btn btn-xs btn-danger',
+                            'data' => [
+                                'method' => 'post',
+                            ],
+                        ]);
                         },
                     ],
                 ],

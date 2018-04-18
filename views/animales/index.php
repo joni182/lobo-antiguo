@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Registrar Especie y Raza', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= GridView::widget([
