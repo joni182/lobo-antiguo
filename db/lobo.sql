@@ -18,6 +18,9 @@ CREATE TABLE especies
     , nombre varchar(255) UNIQUE NOT NULL
 );
 
+INSERT INTO especies (nombre)
+     VALUES ('Perro');
+
 DROP TABLE IF EXISTS razas CASCADE;
 
 CREATE TABLE razas
@@ -28,6 +31,9 @@ CREATE TABLE razas
                               ON DELETE NO ACTION ON UPDATE CASCADE
     , UNIQUE(nombre,especie_id)
 );
+
+INSERT INTO razas (nombre,especie_id)
+     VALUES ('Mestizo', 1);
 
 DROP TABLE IF EXISTS animales CASCADE;
 
@@ -48,6 +54,8 @@ CREATE TABLE animales
     , created_at timestamp DEFAULT localtimestamp
 );
 
+INSERT INTO animales (nombre, raza_id, especie_id, peso, ppp, chip, sexo, observaciones)
+    VALUES ('Pelu', 1, 1, 3.8, false, '195487632541258896XDF', 'Hembra', 'Le apesta el aliento, tiene alitosis y una cresta muy molona.');
 
 DROP TABLE IF EXISTS clinicas CASCADE;
 

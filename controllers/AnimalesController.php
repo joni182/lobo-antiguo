@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Animales;
 use app\models\AnimalesSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * AnimalesController implements the CRUD actions for Animales model.
@@ -46,7 +47,7 @@ class AnimalesController extends Controller
 
     /**
      * Displays a single Animales model.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -67,6 +68,11 @@ class AnimalesController extends Controller
         $model = new Animales();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+            if ($model->upload()) {
+                // file is uploaded successfully
+                return;
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -78,7 +84,7 @@ class AnimalesController extends Controller
     /**
      * Updates an existing Animales model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -98,7 +104,7 @@ class AnimalesController extends Controller
     /**
      * Deletes an existing Animales model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -112,7 +118,7 @@ class AnimalesController extends Controller
     /**
      * Finds the Animales model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param int $id
      * @return Animales the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

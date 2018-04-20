@@ -121,9 +121,20 @@ class EspeciesController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        if (count($model->razas) == 0) {
+            if ($model->delete()) {
+                Yii::$app->session->setFlash('success', "Se ha borrado la especie {$model->nombre}.");
+            } else {
+                Yii::$app->session->setFlash('error', "No se ha podido borrar la especie {$model->nombre}.");
+            }
+        } else {
+            Yii::$app->session->setFlash('error', "No se ha podido borrar la especie {$model->nombre}, hay razas que dependen de esta especie.");
+        }
+
+
+        return $this->redirect(['/especies-razas/index']);
     }
 
     /**
