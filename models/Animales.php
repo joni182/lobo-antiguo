@@ -3,8 +3,8 @@
 namespace app\models;
 
 use Yii;
-use yii\imagine\Image;
 use yii\helpers\Url;
+use yii\imagine\Image;
 
 /**
  * This is the model class for table "animales".
@@ -28,7 +28,7 @@ use yii\helpers\Url;
  */
 class Animales extends \yii\db\ActiveRecord
 {
-    public $foto;
+    public $fotos;
     /**
      * {@inheritdoc}
      */
@@ -39,7 +39,7 @@ class Animales extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-            return array_merge(parent::attributes(), ['foto']);
+        return array_merge(parent::attributes(), ['fotos']);
     }
 
     /**
@@ -48,7 +48,6 @@ class Animales extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 4],
             [['peso'], 'filter', 'filter' => function ($value) {
                 return str_replace(',', '.', $value);
             }],
@@ -62,7 +61,7 @@ class Animales extends \yii\db\ActiveRecord
             [['chip'], 'unique'],
             [['especie_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_id' => 'id']],
             [['raza_id'], 'exist', 'skipOnError' => true, 'targetClass' => Razas::className(), 'targetAttribute' => ['raza_id' => 'id']],
-            [['foto'], 'file', 'extensions' => 'jpg'],
+            [['fotos'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 25],
         ];
     }
 
@@ -84,15 +83,35 @@ class Animales extends \yii\db\ActiveRecord
 
     public function upload()
     {
-        if ($this->foto === null) {
+        if ($this->fotos === [0 => '']) {
             return true;
         }
-        $nombre = Yii::getAlias('@uploads/') . $this->id . '.jpg';
-        $res = $this->foto->saveAs($nombre);
-        if ($res) {
-            Image::thumbnail($nombre, 80, null)->save($nombre);
+
+        $i = 0;
+
+        foreach ($this->fotos as $foto) {
+            $nombre = Yii::getAlias('@webroot/uploads/') . $this->id . '-' . $i++ . '.' . 'jpg';
+            $res = $foto->saveAs($nombre);
+            if ($res) {
+                Image::thumbnail($nombre, 450, null)->save($nombre);
+            }
         }
-        return $res;
+        return true;
+    }
+
+    public function getRutasImagenes()
+    {
+        $imagenes;
+        $i = 0;
+        while (file_exists(($nombre = 'uploads/' . $this->id . '-' . $i++ . '.' . 'jpg'))) {
+            $imagenes[] = $nombre;
+        }
+
+        if (isset($imagenes)) {
+            return $imagenes;
+        }
+
+        return [Url::to('/uploads/') . 'default.jpg'];
     }
 
     /**

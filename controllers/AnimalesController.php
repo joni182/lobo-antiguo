@@ -68,11 +68,8 @@ class AnimalesController extends Controller
         $model = new Animales();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
-            if ($model->upload()) {
-                // file is uploaded successfully
-                return;
-            }
+            $model->fotos = UploadedFile::getInstances($model, 'fotos');
+            $model->upload();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

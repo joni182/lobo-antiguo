@@ -38,11 +38,7 @@ $this->registerJs($js);
 <div class="animales-form">
 
     <?php $form = ActiveForm::begin(
-        [
-            'options' => [
-                'enctype' => 'multipart/form-data'
-                ]
-            ]
+        ['options' => ['enctype' => 'multipart/form-data']]
         ); ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
@@ -71,7 +67,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+    <?= $form->field($model, 'fotos[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
