@@ -68,8 +68,11 @@ class AnimalesController extends Controller
         $model = new Animales();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->fotos = UploadedFile::getInstances($model, 'fotos');
-            $model->upload();
+            if ($this->uploadImagenes($model)) {
+                Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');
+            } else {
+                Yii::$app->session->setFlash('error', 'No se han podido agregar las fotos adecuadamente.');
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -98,6 +101,21 @@ class AnimalesController extends Controller
         ]);
     }
 
+    public function actionAgregarImagenes($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->uploadImagenes($model)) {
+            Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        Yii::$app->session->setFlash('error', 'No se han podido agregar las fotos adecuadamente.');
+        return $this->render('view', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Deletes an existing Animales model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -110,6 +128,12 @@ class AnimalesController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    protected function uploadImagenes($model)
+    {
+        $model->fotos = UploadedFile::getInstances($model, 'fotos');
+        return $model->upload();
     }
 
     /**

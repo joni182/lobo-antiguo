@@ -61,7 +61,7 @@ class Animales extends \yii\db\ActiveRecord
             [['chip'], 'unique'],
             [['especie_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_id' => 'id']],
             [['raza_id'], 'exist', 'skipOnError' => true, 'targetClass' => Razas::className(), 'targetAttribute' => ['raza_id' => 'id']],
-            [['fotos'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png', 'maxFiles' => 25],
+            [['fotos'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 6],
         ];
     }
 
@@ -88,6 +88,11 @@ class Animales extends \yii\db\ActiveRecord
         }
 
         $i = 0;
+        while (file_exists(($nombre = 'uploads/' . $this->id . '-' . $i++ . '.' . 'jpg'))) {
+            // Sirve para buscar el último archivo guardado.
+        }
+
+        $i--;
 
         foreach ($this->fotos as $foto) {
             $nombre = Yii::getAlias('@webroot/uploads/') . $this->id . '-' . $i++ . '.' . 'jpg';
