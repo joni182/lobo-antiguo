@@ -93,6 +93,11 @@ class AnimalesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($this->uploadImagenes($model)) {
+                Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');
+            } else {
+                Yii::$app->session->setFlash('error', 'No se han podido agregar las fotos adecuadamente.');
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -128,6 +133,20 @@ class AnimalesController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionBorrarImagen($id, $ruta)
+    {
+        if (file_exists($ruta)) {
+            if (unlink($ruta)) {
+                Yii::$app->session->setFlash('success', 'Se ha borrado la imagen satisfactoriamente.');
+            } else {
+                Yii::$pp->session->setFlash('error', 'No se ha podido borrar la imagen.');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'El archivo que intenta borrar no existe.');
+        }
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     protected function uploadImagenes($model)

@@ -88,13 +88,11 @@ class Animales extends \yii\db\ActiveRecord
         }
 
         $i = 0;
-        while (file_exists(($nombre = 'uploads/' . $this->id . '-' . $i++ . '.' . 'jpg'))) {
-            // Sirve para buscar el último archivo guardado.
-        }
-
-        $i--;
 
         foreach ($this->fotos as $foto) {
+            while (file_exists($nombre = "uploads/{$this->id}-{$i}.jpg")) {
+                $i++;
+            }
             $nombre = Yii::getAlias('@webroot/uploads/') . $this->id . '-' . $i++ . '.' . 'jpg';
             $res = $foto->saveAs($nombre);
             if ($res) {
@@ -133,11 +131,6 @@ class Animales extends \yii\db\ActiveRecord
                 continue;
             }
             if (is_dir($directorio . $archivo)) {
-                $res[] = [
-                    $directorio . $archivo . '/',
-                    'Tamaño' => 0,
-                    'Modificado' => filemtime($directorio . $archivo),
-                ];
             } elseif (is_readable($directorio . $archivo) && preg_match("/^$id\-.*\.jpg$/", $archivo)) {
                 $res[] = $directorio . $archivo;
             }
