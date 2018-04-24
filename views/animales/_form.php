@@ -32,7 +32,7 @@ $js = <<<EOT
     });
 EOT;
 
-$this->registerJs($js);
+//$this->registerJs($js);
 ?>
 
 <div class="animales-form">
@@ -51,13 +51,6 @@ $this->registerJs($js);
             ]
         )
     ?>
-
-    <?= $form->field($model, 'especie_id')
-        ->dropDownList(Especies::nombres())
-        ->label('Especie')
-    ?>
-
-    <?= $form->field($model, 'raza_id')->dropDownList([])->label('Raza') ?>
 
     <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
 

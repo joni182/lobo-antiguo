@@ -26,8 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'nombre',
-            'especie.nombre:text:Especie',
-            'raza.nombre:text:Raza',
             'sexo',
             'peso:weight',
             'ppp:boolean',

@@ -39,8 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                'model' => $model,
                'attributes' => [
                    'nombre',
-                   'raza.nombre:text:Raza',
-                   'especie.nombre:text:Especie',
                    'peso:weight',
                    'sexo',
                    'chip',

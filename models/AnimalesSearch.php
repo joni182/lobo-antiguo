@@ -19,24 +19,21 @@ class AnimalesSearch extends Animales
             [
                 [
                     'nombre',
-                    'raza.nombre',
-                    'especie.nombre',
                     'chip',
                     'sexo',
                     'peso',
                     'ppp',
                     'observaciones',
-                    'created_at'
+                    'created_at',
                 ],
-                
-                'safe'],
+                'safe', ],
         ];
     }
 
-    public function attributes()
-    {
-        return array_merge(parent::attributes(), ['raza.nombre', 'especie.nombre']);
-    }
+    // public function attributes()
+    // {
+    //     return array_merge(parent::attributes(), ['raza.nombre', 'especie.nombre']);
+    // }
 
     /**
      * {@inheritdoc}
@@ -71,17 +68,17 @@ class AnimalesSearch extends Animales
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith(['especie e', 'raza r']);
-
-        $dataProvider->sort->attributes['raza.nombre'] = [
-            'asc' => ['r.nombre' => SORT_ASC],
-            'desc' => ['r.nombre' => SORT_DESC],
-        ];
-
-        $dataProvider->sort->attributes['especie.nombre'] = [
-            'asc' => ['e.nombre' => SORT_ASC],
-            'desc' => ['e.nombre' => SORT_DESC],
-        ];
+        // $query->joinWith(['especie e', 'raza r']);
+        //
+        // $dataProvider->sort->attributes['raza.nombre'] = [
+        //     'asc' => ['r.nombre' => SORT_ASC],
+        //     'desc' => ['r.nombre' => SORT_DESC],
+        // ];
+        //
+        // $dataProvider->sort->attributes['especie.nombre'] = [
+        //     'asc' => ['e.nombre' => SORT_ASC],
+        //     'desc' => ['e.nombre' => SORT_DESC],
+        // ];
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -90,8 +87,8 @@ class AnimalesSearch extends Animales
         ]);
 
         $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
-            ->andFilterWhere(['ilike', 'r.nombre', $this->getAttribute('raza.nombre')])
-            ->andFilterWhere(['ilike', 'e.nombre', $this->getAttribute('especie.nombre')])
+            // ->andFilterWhere(['ilike', 'r.nombre', $this->getAttribute('raza.nombre')])
+            // ->andFilterWhere(['ilike', 'e.nombre', $this->getAttribute('especie.nombre')])
             ->andFilterWhere(['ilike', 'peso', $this->peso])
             ->andFilterWhere(['ilike', 'chip', $this->chip])
             ->andFilterWhere(['ilike', 'sexo', $this->sexo])
