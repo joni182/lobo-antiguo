@@ -4,26 +4,20 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\AnimalesSearch */
+/* @var $model app\models\AnimalesRazasSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="animales-search">
+<div class="animales-razas-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'animal_id') ?>
 
-    <?= $form->field($model, 'nombre') ?>
-
-    <?= $form->field($model, 'chip') ?>
-
-    <?php // echo $form->field($model, 'observaciones') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
+    <?= $form->field($model, 'raza_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
