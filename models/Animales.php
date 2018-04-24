@@ -11,14 +11,17 @@ use yii\imagine\Image;
  *
  * @property int $id
  * @property string $nombre
- * @property int $raza_id
- * @property int $especie_id
+ * @property string $peso
+ * @property bool $ppp
  * @property string $chip
+ * @property string $sexo
  * @property string $observaciones
  * @property string $created_at
  *
- * @property Especies $especie
- * @property Razas $raza
+ * @property AnimalesColores[] $animalesColores
+ * @property Colores[] $colors
+ * @property AnimalesRazas[] $animalesRazas
+ * @property Razas[] $razas
  * @property EnfermedadesAnimales[] $enfermedadesAnimales
  * @property Enfermedades[] $enfermedads
  * @property Tratamientos[] $tratamientos
@@ -142,17 +145,33 @@ class Animales extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEspecie()
+    public function getAnimalesColores()
     {
-        return $this->hasOne(Especies::className(), ['id' => 'especie_id'])->inverseOf('animales');
+        return $this->hasMany(AnimalesColores::className(), ['animal_id' => 'id'])->inverseOf('animal');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRaza()
+    public function getColors()
     {
-        return $this->hasOne(Razas::className(), ['id' => 'raza_id'])->inverseOf('animales');
+        return $this->hasMany(Colores::className(), ['id' => 'color_id'])->viaTable('animales_colores', ['animal_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnimalesRazas()
+    {
+        return $this->hasMany(AnimalesRazas::className(), ['animal_id' => 'id'])->inverseOf('animal');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRazas()
+    {
+        return $this->hasMany(Razas::className(), ['id' => 'raza_id'])->viaTable('animales_razas', ['animal_id' => 'id']);
     }
 
     /**

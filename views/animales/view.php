@@ -39,10 +39,33 @@ $this->params['breadcrumbs'][] = $this->title;
                'model' => $model,
                'attributes' => [
                    'nombre',
-                   'peso:weight',
                    'sexo',
-                   'chip',
+                   [
+                       'attribute' => 'razas',
+                       'format' => 'text',
+                       'value' => function ($model) {
+                           $nombres = "";
+                           foreach ($model->razas as $raza) {
+                               $nombres = $nombres . ' ' . $raza['nombre'];
+                           }
+                           return $nombres;
+                       },
+                   ],
+                   [
+                       'label' => 'Colores',
+                       'attribute' => 'colors',
+                       'format' => 'text',
+                       'value' => function ($model) {
+                           $nombres = "";
+                           foreach ($model->colors as $color) {
+                               $nombres = $nombres . ' ' . $color['nombre'] . ',';
+                           }
+                           return $nombres;
+                       },
+                   ],
+                   'peso:weight',
                    'ppp:boolean:PPP',
+                   'chip',
                    'observaciones:ntext',
                    'created_at:datetime',
                ],

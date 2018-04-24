@@ -41,6 +41,8 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Animales', 'url' => ['/animales/index']],
+            ['label' => 'Animales-Razas', 'url' => ['/animales-razas/index']],
+            ['label' => 'Animales-Colores', 'url' => ['/animales-colores/index']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
