@@ -106,17 +106,44 @@ class Animales extends \yii\db\ActiveRecord
 
     public function getRutasImagenes()
     {
-        $imagenes;
-        $i = 0;
-        while (file_exists(($nombre = 'uploads/' . $this->id . '-' . $i++ . '.' . 'jpg'))) {
-            $imagenes[] = $nombre;
-        }
+        $imagenes = static::obtenerListadoDeImagenes($this->id);
 
-        if (isset($imagenes)) {
+        if ($imagenes !== []) {
             return $imagenes;
         }
 
         return [Url::to('/uploads/') . 'default.jpg'];
+    }
+
+    public static function obtenerListadoDeImagenes($id = '.+', $directorio = 'uploads/')
+    {
+        // Array en el que obtendremos los resultados
+        $res = [];
+
+        // Agregamos la barra invertida al final en caso de que no exista
+        if (substr($directorio, -1) != '/') {
+            $directorio .= '/';
+        }
+
+        // Creamos un puntero al directorio y obtenemos el listado de archivos
+        $dir = @dir($directorio) or die("getFileList: Error abriendo el directorio $directorio para leerlo");
+        while (($archivo = $dir->read()) !== false) {
+            // Obviamos los archivos ocultos
+            if ($archivo[0] == '.') {
+                continue;
+            }
+            if (is_dir($directorio . $archivo)) {
+                $res[] = [
+                    $directorio . $archivo . '/',
+                    'Tamaño' => 0,
+                    'Modificado' => filemtime($directorio . $archivo),
+                ];
+            } elseif (is_readable($directorio . $archivo) && preg_match("/^$id\-.*\.jpg$/", $archivo)) {
+                $res[] = $directorio . $archivo;
+            }
+        }
+        $dir->close();
+        return $res;
     }
 
     /**
