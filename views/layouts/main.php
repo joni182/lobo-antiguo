@@ -30,7 +30,7 @@ AppAsset::register($this);
     <?php
      Yii::$app->name = 'Lobo';
     NavBar::begin([
-        'brandLabel' => '<img src="assets/navbar-logo.png" style="margin-right:10px" class="pull-left"/>'.Yii::$app->name,
+        'brandLabel' => '<img src="navbar-logo.png" style="margin-right:10px" class="pull-left"/>'.Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
