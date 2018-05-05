@@ -76,8 +76,7 @@ class Animales extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nombre' => 'Nombre',
-            'raza_id' => 'Raza ID',
-            'especie_id' => 'Especie ID',
+            'colors' => 'Colores',
             'chip' => 'Chip',
             'observaciones' => 'Observaciones',
             'created_at' => 'Registrado',

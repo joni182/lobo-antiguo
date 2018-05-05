@@ -39,7 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Colores',
                 'attribute' => 'colors',
                 'format' => 'text',
                 'value' => function ($model) {
