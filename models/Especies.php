@@ -35,7 +35,7 @@ class Especies extends \yii\db\ActiveRecord
 
     public static function nombres()
     {
-        return self::find()
+        return static::find()
             ->select('nombre')
             ->indexBy('id')
             ->column();
