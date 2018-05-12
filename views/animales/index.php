@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'peso:weight',
-            'ppp:boolean',
+            'ppp:boolean:PPP',
             'chip',
             'observaciones:ntext',
             'created_at:datetime',

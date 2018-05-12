@@ -6,8 +6,10 @@ use app\models\Razas;
 use app\models\RazasSearch;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\widgets\ActiveForm;
 
 /**
  * RazasController implements the CRUD actions for Razas model.
@@ -59,8 +61,11 @@ class RazasController extends Controller
 
     public function actionNombresAjax($especie_id)
     {
+        // json_encode(Razas::nombres($especie_id));
+        $model_razas_recolector = new \app\models\RazasRecolector();
         if (Yii::$app->request->isAjax) {
-            return json_encode(Razas::nombres($especie_id));
+            return Html::activeCheckboxList($model_razas_recolector, 'razas[]', Razas::nombres($especie_id));
+            //return (ActiveForm::begin())->field($model_razas_recolector, 'razas[]')->checkboxList(\app\models\Razas::nombres($especie_id));
         }
     }
 

@@ -49,10 +49,11 @@ class Razas extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function nombres()
+    public static function nombres($especie_id = '')
     {
         return static::find()
             ->select('nombre')
+            ->andFilterWhere(['especie_id' => $especie_id])
             ->indexBy('id')
             ->column();
     }

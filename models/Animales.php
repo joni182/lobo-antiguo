@@ -54,16 +54,13 @@ class Animales extends \yii\db\ActiveRecord
             [['peso'], 'filter', 'filter' => function ($value) {
                 return str_replace(',', '.', $value);
             }],
-            [['nombre', 'raza_id', 'especie_id'], 'required'],
-            [['raza_id', 'especie_id', 'chip', 'ppp'], 'default'],
-            [['raza_id', 'especie_id'], 'integer'],
+            [['nombre'], 'required'],
+            [['chip', 'ppp'], 'default'],
             [['ppp'], 'boolean'],
             [['observaciones'], 'string'],
             [['sexo', 'peso', 'created_at'], 'safe'],
             [['nombre', 'chip'], 'string', 'max' => 255],
             [['chip'], 'unique'],
-            [['especie_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_id' => 'id']],
-            [['raza_id'], 'exist', 'skipOnError' => true, 'targetClass' => Razas::className(), 'targetAttribute' => ['raza_id' => 'id']],
             [['fotos'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 6],
         ];
     }
@@ -74,13 +71,24 @@ class Animales extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'nombre' => 'Nombre',
             'colors' => 'Colores',
+            'ppp' => '¿Potencialmente peligroso?',
             'chip' => 'Chip',
             'observaciones' => 'Observaciones',
             'created_at' => 'Registrado',
         ];
+    }
+
+    public function establecerFotoPrincipal($ruta)
+    {
+        $carpetaPrincipal = Yii::getAlias('@webroot/uploads/') . 'fotos_principal';
+        if (!file_exists($carpetaPrincipal)) {
+            mkdir($carpetaPrincipal);
+        }
+        $principal = "$carpetaPrincipal/{$this->id}-principal.jpg";
+
+        return copy($ruta, $principal);
     }
 
     public function upload()
@@ -139,6 +147,20 @@ class Animales extends \yii\db\ActiveRecord
         }
         $dir->close();
         return $res;
+    }
+
+    public function asignarRazas($razas)
+    {
+        foreach ($razas as $raza_id) {
+            $animalRaza = new AnimalesRazas();
+            $animalRaza->attributes = ['animal_id' => $this->id, 'raza_id' => $raza_id];
+            $animalRaza->save();
+        }
+    }
+
+    public function desasignarRazas()
+    {
+        return AnimalesRazas::deleteAll(['animal_id' => $this->id]);
     }
 
     /**

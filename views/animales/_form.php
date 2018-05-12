@@ -5,6 +5,7 @@ use app\models\Especies;
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -12,27 +13,22 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 $url = Url::to(['razas/nombres-ajax']);
 $js = <<<EOT
-    function formarSelect(result){
-        $('#animales-raza_id').empty();
-        for(key in result){;
-            $('#animales-raza_id').append("<option value='"+key+"'>"+result[key]+"</option>")
-        }
-        if ($('#animales-raza_id').children().length == 0){
-            $('#animales-raza_id').append("<option>No hay razas registradas</option>")
-        }
-    }
     function peticion(){
-        $.getJSON('$url',  {'especie_id': $('#animales-especie_id').prop('selectedIndex')+1}, function(result){
-            formarSelect(result);
+        $('#animales-razas').empty();
+        $.get('$url',  {'especie_id': $('#especie').prop('selectedIndex')+1}).done(function(data) {
+            $('#animales-razas').html(data);
+        }).fail(function() {
+            $('#animales-razas').html('<h2>Ha habido algún error en el servidor y no se puede recuperar el listado de razas</h2>');
         });
     };
     $(document).ready(function(){
-        $('#animales-especie_id').on('change', peticion);
+        $('select[name="especie"]').on('change', peticion);
+        $('select[name="especie"]').attr('id','especie');
         peticion();
     });
 EOT;
 
-//$this->registerJs($js);
+$this->registerJs($js);
 ?>
 
 <div class="animales-form">
@@ -54,9 +50,22 @@ EOT;
 
     <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ppp')->checkbox()->label('PPP ') ?>
+    <?= $form->field($model, 'ppp')->checkbox() ?>
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
+
+    <fieldset>
+        <legend>Raza</legend>
+        <label>Especie
+            <div class="">
+                <?= Html::dropDownList('especie', null, Especies::nombres()) ?>
+            </div>
+        </label>
+
+        <div id='animales-razas' class="form-group field-animales-razas has-success" style="margin-top:15px;">
+
+        </div>
+    </fieldset>
 
     <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
 
