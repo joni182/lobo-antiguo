@@ -9,8 +9,10 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
+        '@uploads' => '@app/web/uploads/',
+        '@fotoprincipal' => '@app/web/uploads/fotos_principal/',
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'language' => 'es-ES',
     'components' => [

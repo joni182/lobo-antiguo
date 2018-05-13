@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Animales;
 use app\models\AnimalesSearch;
+use app\models\ColoresRecolector;
 use app\models\RazasRecolector;
 use Yii;
 use yii\filters\VerbFilter;
@@ -68,10 +69,11 @@ class AnimalesController extends Controller
     {
         $model = new Animales();
         $model_razas_recolector = new RazasRecolector();
+        $model_colores_recolector = new ColoresRecolector();
 
-        if ($model->load(Yii::$app->request->post()) && $model_razas_recolector->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model_razas_recolector->razas !== []) {
-                $model->asignarRazas($model_razas_recolector->razas);
+        if ($model->load(Yii::$app->request->post()) && $model_razas_recolector->load(Yii::$app->request->post()) && $model_colores_recolector->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model_colores_recolector->colores !== []) {
+                $model->asignarColores($model_colores_recolector->colores);
             }
             if ($this->uploadImagenes($model)) {
                 Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');
@@ -85,6 +87,7 @@ class AnimalesController extends Controller
         return $this->render('create', [
             'model' => $model,
             'model_razas_recolector' => $model_razas_recolector,
+            'model_colores_recolector' => $model_colores_recolector,
         ]);
     }
 
@@ -99,11 +102,16 @@ class AnimalesController extends Controller
     {
         $model = $this->findModel($id);
         $model_razas_recolector = new RazasRecolector();
+        $model_colores_recolector = new ColoresRecolector();
 
-        if ($model->load(Yii::$app->request->post()) && $model_razas_recolector->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model_razas_recolector->load(Yii::$app->request->post()) && $model_colores_recolector->load(Yii::$app->request->post()) && $model->save()) {
             if ($model_razas_recolector->razas !== '') {
                 $model->desasignarRazas();
                 $model->asignarRazas($model_razas_recolector->razas);
+            }
+            if ($model_colores_recolector->colores !== '') {
+                $model->desasignarColores();
+                $model->asignarColores($model_colores_recolector->colores);
             }
             if ($boleano = ($this->uploadImagenes($model)) !== null) {
                 if ($boleano) {
@@ -118,6 +126,7 @@ class AnimalesController extends Controller
         return $this->render('update', [
             'model' => $model,
             'model_razas_recolector' => $model_razas_recolector,
+            'model_colores_recolector' => $model_colores_recolector,
         ]);
     }
 
@@ -172,6 +181,17 @@ class AnimalesController extends Controller
             Yii::$app->session->setFlash('success', 'Se ha cambiado la imagen satisfactoriamente.');
         } else {
             Yii::$pp->session->setFlash('error', 'No se ha podido cambiar la imagen.');
+        }
+        return $this->redirect(['view', 'id' => $id]);
+    }
+
+    public function actionBorrarFotoPrincipal($id)
+    {
+        $model = Animales::findOne($id);
+        if ($model->borrarFotoPrincipal()) {
+            Yii::$app->session->setFlash('success', 'Se ha borrado la foto principal');
+        } else {
+            Yii::$app->session->setFlash('error', 'No se ha podido borrado la foto principal');
         }
         return $this->redirect(['view', 'id' => $id]);
     }

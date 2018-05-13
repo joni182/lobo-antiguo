@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "colores".
  *
@@ -41,5 +39,13 @@ class Colores extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
         ];
+    }
+
+    public static function nombres()
+    {
+        return static::find()
+            ->select('nombre')
+            ->indexBy('id')
+            ->column();
     }
 }

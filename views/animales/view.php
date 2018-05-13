@@ -35,7 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-6">
                 <?= Html::img($fotoPrincipal, ['style' => [
                     'border-radius' => '2%'
-                    ]])  ?>
+                    ]])
+                ?>
+
+                <?= Html::a('Borrar Avatar', ['borrar-foto-principal', 'id' => $model->id], [
+                    'class' => 'btn btn-xs btn-danger',
+                    'style' => 'margin:10px',
+                    'data' => [
+                        'confirm' => '¿Estás seguro de BORRAR esta foto principal?',
+                        'method' => 'post',
+                    ],
+                ])?>
                 </div>
                 <div class="col-md-6">
                     <?= DetailView::widget([
@@ -49,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => function ($model) {
                                     $nombres = "";
                                     foreach ($model->razas as $raza) {
-                                        $nombres = $nombres . ' ' . $raza['nombre'];
+                                        $nombres = $nombres . ' ' . $raza['nombre'].',';
                                     }
                                     return $nombres;
                                 },
@@ -98,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'class' => 'btn btn-xs btn-info',
                                         'style' => 'margin:10px',
                                         'data' => [
-                                            'confirm' => '¿Estás seguro de BORRAR esta foto definitivamente?',
+                                            'confirm' => '¿Estás seguro de hacer esta foto la foto de perfil?',
                                             'method' => 'post',
                                         ],
                                     ])?>

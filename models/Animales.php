@@ -80,9 +80,17 @@ class Animales extends \yii\db\ActiveRecord
         ];
     }
 
+    public function borrarFotoPrincipal()
+    {
+        $fotoPrincipal = Yii::getAlias('@fotoprincipal') . "{$this->id}-principal.jpg";
+        if (file_exists($fotoPrincipal)) {
+            return unlink($fotoPrincipal);
+        }
+    }
+
     public function establecerFotoPrincipal($ruta)
     {
-        $carpetaPrincipal = Yii::getAlias('@webroot/uploads/') . 'fotos_principal';
+        $carpetaPrincipal = Yii::getAlias('@fotoprincipal');
         if (!file_exists($carpetaPrincipal)) {
             mkdir($carpetaPrincipal);
         }
@@ -103,7 +111,7 @@ class Animales extends \yii\db\ActiveRecord
             while (file_exists($nombre = "uploads/{$this->id}-{$i}.jpg")) {
                 $i++;
             }
-            $nombre = Yii::getAlias('@webroot/uploads/') . $this->id . '-' . $i++ . '.' . 'jpg';
+            $nombre = Yii::getAlias('@uploads') . $this->id . '-' . $i++ . '.' . 'jpg';
             $res = $foto->saveAs($nombre);
             if ($res) {
                 Image::thumbnail($nombre, 450, null)->save($nombre);
@@ -161,6 +169,20 @@ class Animales extends \yii\db\ActiveRecord
     public function desasignarRazas()
     {
         return AnimalesRazas::deleteAll(['animal_id' => $this->id]);
+    }
+
+    public function asignarColores($colores)
+    {
+        foreach ($colores as $color_id) {
+            $animalColor = new AnimalesColores();
+            $animalColor->attributes = ['animal_id' => $this->id, 'color_id' => $color_id];
+            $animalColor->save();
+        }
+    }
+
+    public function desasignarColores()
+    {
+        return AnimalesColores::deleteAll(['animal_id' => $this->id]);
     }
 
     /**

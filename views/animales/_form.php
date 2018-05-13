@@ -54,6 +54,8 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model_colores_recolector, 'colores[]')->checkboxList(\app\models\Colores::nombres());  ?>
+
     <fieldset>
         <legend>Raza</legend>
         <label>Especie
