@@ -3,6 +3,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AnimalesSearch */
@@ -12,16 +13,22 @@ $this->title = 'Animales';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="animales-index">
-
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
     </p>
+    <div class="row">
+        <?= ListView::widget([
+            'dataProvider' => $dataProvider,
+            'itemView' => '_ficha',
+            ]) ?>
+        </div>
 
-    <?= GridView::widget([
+
+    <!-- <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -76,5 +83,5 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
             ],
         ],
-    ]); ?>
+    ]); ?> -->
 </div>

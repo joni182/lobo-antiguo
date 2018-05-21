@@ -120,6 +120,18 @@ class Animales extends \yii\db\ActiveRecord
         return true;
     }
 
+    /**
+     * Devuelve la ruta de la imagen principal que identifica al animal, si no
+     * existe devuelve una imagen por defecto.
+     * @return string La ruta a la imagen principal
+     */
+    public function getRutaPrincipal():string
+    {
+        if (file_exists(($fotoPrincipal = Yii::getAlias('@fotoprincipal') . "{$this->id}-principal.jpg"))) {
+            return "uploads/fotos_principal/{$this->id}-principal.jpg";
+        }
+        return 'uploads/default.jpg';
+    }
     public function getRutasImagenes()
     {
         $imagenes = static::obtenerListadoDeImagenes($this->id);

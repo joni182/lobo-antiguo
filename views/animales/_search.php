@@ -15,13 +15,25 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
     <?= $form->field($model, 'nombre') ?>
+
+    <?= $form->field($model, 'sexo')
+        ->dropDownList(
+            [
+                '' => '--Seleccionar--',
+                'Hembra' => 'Hembra',
+                'Macho' => 'Macho',
+            ]
+        )
+    ?>
+
+    <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'ppp')->dropDownList(['' => '--Seleccionar--', false => 'No', true => 'Si']) ?>
 
     <?= $form->field($model, 'chip') ?>
 
-    <?php // echo $form->field($model, 'observaciones') ?>
+    <?php echo $form->field($model, 'observaciones') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

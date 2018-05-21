@@ -15,7 +15,7 @@ $url = Url::to(['razas/nombres-ajax']);
 $js = <<<EOT
     function peticion(){
         $('#animales-razas').empty();
-        $.get('$url',  {'especie_id': $('#especie').prop('selectedIndex')+1}).done(function(data) {
+        $.get('$url',  {'especie_id': $('#especie').children().eq($('#especie').prop('selectedIndex')).attr('value')}).done(function(data) {
             $('#animales-razas').html(data);
         }).fail(function() {
             $('#animales-razas').html('<h2>Ha habido algún error en el servidor y no se puede recuperar el listado de razas</h2>');

@@ -13,28 +13,17 @@ CREATE TABLE colores
 INSERT INTO colores (nombre)
 VALUES ('blanco')
      , ('negro')
-     , ('gris claro')
-     , ('gris oscuro')
-     , ('marrón claro')
-     , ('marrón oscuro')
-     , ('chocolate claro')
-     , ('chocolate oscuro')
-     , ('canela claro')
-     , ('canela oscuro')
-     , ('amarillo claro')
-     , ('amarillo oscuro')
-     , ('naranja claro')
-     , ('naranja oscuro')
-     , ('azul claro')
-     , ('azul oscuro')
-     , ('rojo claro')
-     , ('rojo oscuro')
-     , ('verde claro')
-     , ('verde oscuro')
-     , ('rosa claro')
-     , ('rosa oscuro')
-     , ('violeta claro')
-     , ('violeta oscuro');
+     , ('gris')
+     , ('marrón')
+     , ('chocolate')
+     , ('canela')
+     , ('amarillo')
+     , ('naranja')
+     , ('azul')
+     , ('rojo')
+     , ('verde')
+     , ('rosa')
+     , ('violeta');
 
 DROP TABLE IF EXISTS especies CASCADE;
 
@@ -98,7 +87,7 @@ DROP TABLE IF EXISTS animales_razas CASCADE;
 CREATE TABLE animales_razas
 (
       animal_id bigint NOT NULL REFERENCES animales(id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE CASCADE ON UPDATE CASCADE
     , raza_id   bigint NOT NULL REFERENCES razas(id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
     , PRIMARY KEY(animal_id, raza_id)
@@ -115,7 +104,7 @@ DROP TABLE IF EXISTS animales_colores CASCADE;
 CREATE TABLE animales_colores
 (
       animal_id bigint NOT NULL REFERENCES animales(id)
-                                ON DELETE NO ACTION ON UPDATE CASCADE
+                                ON DELETE CASCADE ON UPDATE CASCADE
     , color_id  bigint NOT NULL REFERENCES colores(id)
                                 ON DELETE NO ACTION ON UPDATE CASCADE
     , PRIMARY KEY(animal_id, color_id)
