@@ -9,18 +9,28 @@ use yii\widgets\ListView;
 /* @var $searchModel app\models\AnimalesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-
+$js = <<<JS
+    $('.search-button').on('click', function(){
+        $('#w0').slideToggle();
+    });
+JS;
+$this->registerJs($js);
 $this->title = 'Animales';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="animales-index">
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::img('search.png',[
+            'class' => 'search-button col-sm-offset-7',
+            'alt' => 'Buscar animal',
+            'width' => '35',
+            'height' => '35'])  ?>
     </p>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="row">
         <?= ListView::widget([
             'dataProvider' => $dataProvider,
