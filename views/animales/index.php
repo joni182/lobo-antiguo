@@ -9,6 +9,7 @@ use yii\widgets\ListView;
 /* @var $searchModel app\models\AnimalesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+
 $this->title = 'Animales';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
