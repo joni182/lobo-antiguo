@@ -31,7 +31,10 @@ use yii\imagine\Image;
  */
 class Animales extends \yii\db\ActiveRecord
 {
+    public $razas_rec;
+    public $colores_rec;
     public $fotos;
+
     /**
      * {@inheritdoc}
      */
@@ -42,7 +45,7 @@ class Animales extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['fotos']);
+        return array_merge(parent::attributes(), ['fotos', 'razas_rec', 'colores_rec']);
     }
 
     /**
@@ -58,7 +61,7 @@ class Animales extends \yii\db\ActiveRecord
             [['chip', 'ppp'], 'default'],
             [['ppp'], 'boolean'],
             [['observaciones'], 'string'],
-            [['sexo', 'peso', 'created_at'], 'safe'],
+            [['sexo', 'peso', 'created_at', 'razas_rec', 'colores_rec'], 'safe'],
             [['nombre', 'chip'], 'string', 'max' => 255],
             [['chip'], 'unique'],
             [['fotos'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 6],
@@ -169,12 +172,15 @@ class Animales extends \yii\db\ActiveRecord
         return $res;
     }
 
-    public function asignarRazas($razas)
+    public function asignarRazas()
     {
-        foreach ($razas as $raza_id) {
+        foreach ($this->razas_rec as $raza_id) {
             $animalRaza = new AnimalesRazas();
             $animalRaza->attributes = ['animal_id' => $this->id, 'raza_id' => $raza_id];
             $animalRaza->save();
+            // $p = AnimalesRazas::findOne(['animal_id' => $this->id]);
+            // var_dump($p->attributes);
+            // die();
         }
     }
 
@@ -183,9 +189,9 @@ class Animales extends \yii\db\ActiveRecord
         return AnimalesRazas::deleteAll(['animal_id' => $this->id]);
     }
 
-    public function asignarColores($colores)
+    public function asignarColores()
     {
-        foreach ($colores as $color_id) {
+        foreach ($this->colores_rec as $color_id) {
             $animalColor = new AnimalesColores();
             $animalColor->attributes = ['animal_id' => $this->id, 'color_id' => $color_id];
             $animalColor->save();

@@ -41,7 +41,20 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Animales', 'url' => ['/animales/index']],
+            [
+                'label' => 'Animales',
+                'url' => ['/animales/index'],
+                'items' => [
+                    [
+                        'label' => 'Animales',
+                        'url' => ['/animales/index'],
+                    ],
+                    [
+                        'label' => 'Razas',
+                        'url' => ['/especies-razas/index'],
+                    ],
+                ]
+            ],
             ['label' => 'Animales-Razas', 'url' => ['/animales-razas/index']],
             ['label' => 'Animales-Colores', 'url' => ['/animales-colores/index']],
             Yii::$app->user->isGuest ? (

@@ -4,8 +4,6 @@ namespace app\controllers;
 
 use app\models\Animales;
 use app\models\AnimalesSearch;
-use app\models\ColoresRecolector;
-use app\models\RazasRecolector;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -40,7 +38,8 @@ class AnimalesController extends Controller
     {
         $searchModel = new AnimalesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $searchModel->razas_rec = null;
+        $searchModel->colores_rec = null;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -68,12 +67,14 @@ class AnimalesController extends Controller
     public function actionCreate()
     {
         $model = new Animales();
-        $model_razas_recolector = new RazasRecolector();
-        $model_colores_recolector = new ColoresRecolector();
 
-        if ($model->load(Yii::$app->request->post()) && $model_razas_recolector->load(Yii::$app->request->post()) && $model_colores_recolector->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model_colores_recolector->colores !== []) {
-                $model->asignarColores($model_colores_recolector->colores);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->razas_rec !== []) {
+                $model->asignarRazas();
+            }
+
+            if ($model->colores_rec !== []) {
+                $model->asignarColores();
             }
             if ($this->uploadImagenes($model)) {
                 Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');
@@ -101,18 +102,18 @@ class AnimalesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model_razas_recolector = new RazasRecolector();
-        $model_colores_recolector = new ColoresRecolector();
 
-        if ($model->load(Yii::$app->request->post()) && $model_razas_recolector->load(Yii::$app->request->post()) && $model_colores_recolector->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model_razas_recolector->razas !== '') {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->razas_rec !== []) {
                 $model->desasignarRazas();
-                $model->asignarRazas($model_razas_recolector->razas);
+                $model->asignarRazas();
             }
-            if ($model_colores_recolector->colores !== '') {
+
+            if ($model->colores_rec !== []) {
                 $model->desasignarColores();
-                $model->asignarColores($model_colores_recolector->colores);
+                $model->asignarColores();
             }
+
             if ($boleano = ($this->uploadImagenes($model)) !== null) {
                 if ($boleano) {
                     Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');

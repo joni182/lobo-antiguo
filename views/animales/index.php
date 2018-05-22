@@ -30,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'width' => '35',
             'height' => '35'])  ?>
     </p>
+    <div class="row">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    </div>
     <div class="row">
         <?= ListView::widget([
             'dataProvider' => $dataProvider,

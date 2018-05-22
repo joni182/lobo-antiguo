@@ -15,7 +15,7 @@ $url = Url::to(['razas/nombres-ajax']);
 $js = <<<EOT
     function peticion(){
         $('#animales-razas').empty();
-        $.get('$url',  {'especie_id': $('#especie').children().eq($('#especie').prop('selectedIndex')).attr('value')}).done(function(data) {
+        $.get('$url',  {'especie_id': $('#especie').children().eq($('#especie').prop('selectedIndex')).attr('value'), 'origen': '_form'}).done(function(data) {
             $('#animales-razas').html(data);
         }).fail(function() {
             $('#animales-razas').html('<h2>Ha habido algún error en el servidor y no se puede recuperar el listado de razas</h2>');
@@ -54,7 +54,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'chip')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model_colores_recolector, 'colores[]')->checkboxList(\app\models\Colores::nombres());  ?>
+    <?= $form->field($model, 'colores_rec[]')->checkboxList(\app\models\Colores::nombres());  ?>
 
     <fieldset>
         <legend>Raza</legend>

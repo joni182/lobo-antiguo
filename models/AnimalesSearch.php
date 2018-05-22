@@ -10,6 +10,8 @@ use yii\data\ActiveDataProvider;
  */
 class AnimalesSearch extends Animales
 {
+    // public $razas = [];
+    // public $colores = [];
     /**
      * {@inheritdoc}
      */
@@ -20,6 +22,8 @@ class AnimalesSearch extends Animales
                 [
                     'nombre',
                     'chip',
+                    'razas_rec',
+                    'colores_rec',
                     'sexo',
                     'peso',
                     'ppp',
@@ -30,10 +34,10 @@ class AnimalesSearch extends Animales
         ];
     }
 
-    // public function attributes()
-    // {
-    //     return array_merge(parent::attributes(), ['raza.nombre', 'especie.nombre']);
-    // }
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['razas_rec', 'colores_rec']);
+    }
 
     /**
      * {@inheritdoc}
@@ -53,7 +57,7 @@ class AnimalesSearch extends Animales
      */
     public function search($params)
     {
-        $query = Animales::find();
+        $query = Animales::find()->joinWith('razas')->joinWith('colors')->groupBy('animales.id');
 
         // add conditions that should always apply here
 
@@ -81,10 +85,25 @@ class AnimalesSearch extends Animales
         // ];
 
         // grid filtering conditions
-        $query->andFilterWhere([
+
+        $filtro = [
             'created_at' => $this->created_at,
             'ppp' => $this->ppp,
-        ]);
+        ];
+
+        if ($this->razas_rec) {
+            foreach ($this->razas_rec as $value) {
+                $filtro['razas.id'] = $value;
+            }
+        }
+        if ($this->colores_rec) {
+            foreach ($this->colores_rec as $value) {
+                $filtro['razas.id'] = $value;
+            }
+        }
+
+
+        $query->andFilterWhere($filtro);
 
         $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
             // ->andFilterWhere(['ilike', 'r.nombre', $this->getAttribute('raza.nombre')])

@@ -59,17 +59,21 @@ class RazasController extends Controller
         ]);
     }
 
-    public function actionNombresAjax($especie_id)
+    public function actionNombresAjax($especie_id, $origen)
     {
+        if ($origen == '_form') {
+            $model = new \app\models\Animales();
+        } elseif ($origen == '_search') {
+            $model = new \app\models\AnimalesSearch();
+        } else {
+            Yii::$app->session->setFlash('error', 'Origen no especificado o incorrecto en razas/nombresAjax');
+        }
         // json_encode(Razas::nombres($especie_id));
-        $model_razas_recolector = new \app\models\RazasRecolector();
         if (Yii::$app->request->isAjax) {
-            return Html::activeCheckboxList($model_razas_recolector, 'razas[]', Razas::nombres($especie_id));
+            return Html::activeCheckboxList($model, 'razas_rec[]', Razas::nombres($especie_id));
             //return (ActiveForm::begin())->field($model_razas_recolector, 'razas[]')->checkboxList(\app\models\Razas::nombres($especie_id));
         }
     }
-
-
 
     /**
      * Creates a new Razas model.
@@ -137,7 +141,7 @@ class RazasController extends Controller
                 Yii::$app->session->setFlash('error', "No se ha podido borrar la raza {$model->nombre}.");
             }
         } else {
-            Yii::$app->session->setFlash('error', "No se ha podido borrar la raza {$model->nombre}, hay animales que dependen de esta especie.");
+            Yii::$app->session->setFlash('error', "No se ha podido borrar la raza {$model->nombre}, hay animales que dependen de esta raza.");
         }
 
 
