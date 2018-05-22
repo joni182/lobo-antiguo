@@ -119,3 +119,7 @@ a.desc:after {
 body {
     background-color: #f7e6ff;
 }
+
+.oculto {
+    display: none;
+}

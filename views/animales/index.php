@@ -24,11 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
-        <?= Html::img('search.png',[
-            'class' => 'search-button col-sm-offset-7',
-            'alt' => 'Buscar animal',
-            'width' => '35',
-            'height' => '35'])  ?>
+        <div class="search-button">
+            <?= Html::img('search.png',[
+                'class' => 'col-sm-offset-10',
+                'alt' => 'Buscar animal',
+                'width' => '35',
+                'height' => '35'])
+            ?>
+            <span class="">
+                Buscar Animal
+            </span>
+        </div>
     </p>
     <div class="row">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>

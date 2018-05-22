@@ -87,8 +87,6 @@ class AnimalesController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'model_razas_recolector' => $model_razas_recolector,
-            'model_colores_recolector' => $model_colores_recolector,
         ]);
     }
 
@@ -126,8 +124,6 @@ class AnimalesController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'model_razas_recolector' => $model_razas_recolector,
-            'model_colores_recolector' => $model_colores_recolector,
         ]);
     }
 
