@@ -65,6 +65,7 @@ $this->registerJs($js);
                             'attributes' => [
                                 'nombre',
                                 'sexo',
+                                'tamanio',
                                 [
                                     'attribute' => 'razas',
                                     'format' => 'text',

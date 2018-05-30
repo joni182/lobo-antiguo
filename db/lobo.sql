@@ -74,6 +74,8 @@ CREATE TABLE animales
     , chip          varchar(255) UNIQUE
     , sexo          varchar(6)   CONSTRAINT ck_sexo_valido
                                  CHECK (sexo = 'Hembra' OR sexo = 'Macho')
+    , tamanio       varchar(255) CONSTRAINT ck_tamanio_valido
+                                 CHECK ( tamanio = 'pequenio' OR tamanio = 'mediano' OR tamanio = 'grande' OR tamanio = 'muy grande')
     , observaciones text
     , created_at timestamp DEFAULT localtimestamp
 );

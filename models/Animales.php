@@ -60,7 +60,7 @@ class Animales extends \yii\db\ActiveRecord
             [['nombre'], 'required'],
             [['chip', 'ppp'], 'default'],
             [['ppp'], 'boolean'],
-            [['observaciones'], 'string'],
+            [['observaciones', 'tamanio'], 'string'],
             [['sexo', 'peso', 'created_at', 'razas_rec', 'colores_rec'], 'safe'],
             [['nombre', 'chip'], 'string', 'max' => 255],
             [['chip'], 'unique'],
@@ -78,8 +78,19 @@ class Animales extends \yii\db\ActiveRecord
             'colors' => 'Colores',
             'ppp' => '¿Potencialmente peligroso?',
             'chip' => 'Chip',
+            'tamanio' => 'Tamaño',
             'observaciones' => 'Observaciones',
             'created_at' => 'Registrado',
+        ];
+    }
+
+    public function tamaniosDisponibles()
+    {
+        return [
+            'pequenio' => 'Pequeño',
+            'mediano' => 'Mediano',
+            'grande' => 'Grande',
+            'muy grande' => 'Muy grande',
         ];
     }
 

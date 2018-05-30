@@ -48,6 +48,8 @@ $this->registerJs($js);
         )
     ?>
 
+    <?= $form->field($model, 'tamanio')->dropDownList($model->tamaniosDisponibles())?>
+
     <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'ppp')->checkbox() ?>
