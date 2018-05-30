@@ -174,13 +174,13 @@ class Animales extends \yii\db\ActiveRecord
 
     public function asignarRazas()
     {
-        foreach ($this->razas_rec as $raza_id) {
-            $animalRaza = new AnimalesRazas();
-            $animalRaza->attributes = ['animal_id' => $this->id, 'raza_id' => $raza_id];
-            $animalRaza->save();
-            // $p = AnimalesRazas::findOne(['animal_id' => $this->id]);
-            // var_dump($p->attributes);
-            // die();
+        if ($this->razas_rec) {
+            foreach ($this->razas_rec as $raza_id) {
+                $animalRaza = new AnimalesRazas();
+                $animalRaza->attributes = ['animal_id' => $this->id, 'raza_id' => $raza_id];
+                $animalRaza->save();
+                // $p = AnimalesRazas::findOne(['animal_id' => $this->id]);
+            }
         }
     }
 
@@ -191,10 +191,12 @@ class Animales extends \yii\db\ActiveRecord
 
     public function asignarColores()
     {
-        foreach ($this->colores_rec as $color_id) {
-            $animalColor = new AnimalesColores();
-            $animalColor->attributes = ['animal_id' => $this->id, 'color_id' => $color_id];
-            $animalColor->save();
+        if ($this->colores_rec) {
+            foreach ($this->colores_rec as $color_id) {
+                $animalColor = new AnimalesColores();
+                $animalColor->attributes = ['animal_id' => $this->id, 'color_id' => $color_id];
+                $animalColor->save();
+            }
         }
     }
 

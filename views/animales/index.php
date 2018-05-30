@@ -11,7 +11,7 @@ use yii\widgets\ListView;
 
 $js = <<<JS
     $('.search-button').on('click', function(){
-        $('#w0').slideToggle();
+        $('form').first().slideToggle();
     });
 JS;
 $this->registerJs($js);
@@ -21,21 +21,23 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="animales-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
-        <div class="search-button">
-            <?= Html::img('search.png',[
-                'class' => 'col-sm-offset-10',
-                'alt' => 'Buscar animal',
-                'width' => '35',
-                'height' => '35'])
-            ?>
-            <span class="">
-                Buscar Animal
-            </span>
+        <div class="row">
+            <div class="col-md-6">
+                <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
+            </div>
+            <div class="search-button">
+                <?= Html::img('search.png',[
+                    'class' => 'col-sm-offset-4',
+                    'alt' => 'Buscar animal',
+                    'width' => '35',
+                    'height' => '35'])
+                ?>
+                <span class="">
+                    Buscar Animal
+                </span>
         </div>
-    </p>
+    </div>
     <div class="row">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     </div>

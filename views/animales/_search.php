@@ -30,7 +30,7 @@ $this->registerJs($js);
 
 ?>
 
-<div class="animales-search">
+<div class="animales-search" >
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],

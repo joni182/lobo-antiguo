@@ -69,13 +69,8 @@ class AnimalesController extends Controller
         $model = new Animales();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model->razas_rec !== []) {
-                $model->asignarRazas();
-            }
-
-            if ($model->colores_rec !== []) {
-                $model->asignarColores();
-            }
+            $model->asignarRazas();
+            $model->asignarColores();
             if ($this->uploadImagenes($model)) {
                 Yii::$app->session->setFlash('success', 'Se han agregado fotos satisfactoriamente.');
                 $model->establecerFotoPrincipal($model->rutasImagenes[0]);
@@ -102,15 +97,11 @@ class AnimalesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model->razas_rec !== []) {
-                $model->desasignarRazas();
-                $model->asignarRazas();
-            }
+            $model->desasignarRazas();
+            $model->asignarRazas();
 
-            if ($model->colores_rec !== []) {
-                $model->desasignarColores();
-                $model->asignarColores();
-            }
+            $model->desasignarColores();
+            $model->asignarColores();
 
             if ($boleano = ($this->uploadImagenes($model)) !== null) {
                 if ($boleano) {

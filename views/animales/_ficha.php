@@ -7,7 +7,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
  ?>
 
-<div class="col-md-2">
+<div class="col-md-4" >
     <div class="thumbnail">
         <a href=<?= Url::to(['animales/view', 'id' => $model->id]) ?>>
             <img src=<?= $model->rutaPrincipal ?> alt=<?= $model->nombre ?> style="height:100%">
