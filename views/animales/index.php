@@ -32,14 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="search-button" >
                 <?= Html::img('search.png',
                 [
-                    'style' => 'margin:2px',
+                    'style' => 'margin:3px',
                     'alt' => 'Buscar animal',
                     'width' => '35',
                     'height' => '35'
                 ])
                 ?>
                 <span class="">
-                    Buscar Animal
+                    Buscador
                 </span>
         </div>
     </div>

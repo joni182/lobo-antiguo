@@ -105,7 +105,7 @@ class AnimalesSearch extends Animales
 
         $query->andFilterWhere($filtro);
 
-        $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
+        $query->andFilterWhere(['ilike', 'animales.nombre', $this->nombre])
             // ->andFilterWhere(['ilike', 'r.nombre', $this->getAttribute('raza.nombre')])
             // ->andFilterWhere(['ilike', 'e.nombre', $this->getAttribute('especie.nombre')])
             ->andFilterWhere(['ilike', 'peso', $this->peso])
