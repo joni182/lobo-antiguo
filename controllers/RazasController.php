@@ -59,10 +59,15 @@ class RazasController extends Controller
         ]);
     }
 
-    public function actionNombresAjax($especie_id, $origen)
+    public function actionNombresAjax($especie_id, $origen, $animal_id = null)
     {
         if ($origen == '_form') {
-            $model = new \app\models\Animales();
+            if ($animal_id != null) {
+                $model = \app\models\Animales::findOne(['id' => $animal_id]);
+                $model->razas_rec = $model->razasAsignadasId();
+            } else {
+                $model = new \app\models\Animales();
+            }
         } elseif ($origen == '_search') {
             $model = new \app\models\AnimalesSearch();
         } else {
@@ -70,7 +75,7 @@ class RazasController extends Controller
         }
         // json_encode(Razas::nombres($especie_id));
         if (Yii::$app->request->isAjax) {
-            return Html::activeCheckboxList($model, 'razas_rec[]', Razas::nombres($especie_id));
+            return Html::activeCheckboxList($model, 'razas_rec', Razas::nombres($especie_id));
             //return (ActiveForm::begin())->field($model_razas_recolector, 'razas[]')->checkboxList(\app\models\Razas::nombres($especie_id));
         }
     }

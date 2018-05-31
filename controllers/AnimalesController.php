@@ -113,6 +113,8 @@ class AnimalesController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $model->colores_rec = $model->coloresAsignadosId();
+
         return $this->render('update', [
             'model' => $model,
         ]);

@@ -75,22 +75,31 @@ class Animales extends \yii\db\ActiveRecord
     {
         return [
             'nombre' => 'Nombre',
-            'colors' => 'Colores',
             'ppp' => '¿Potencialmente peligroso?',
             'chip' => 'Chip',
             'tamanio' => 'Tamaño',
             'observaciones' => 'Observaciones',
             'created_at' => 'Registrado',
+            'colores_rec' => 'Colores',
+            'razas_rec' => 'Razas',
         ];
     }
 
-    public function tamaniosDisponibles()
+    public static function tamaniosDisponibles()
     {
         return [
             'pequenio' => 'Pequeño',
             'mediano' => 'Mediano',
             'grande' => 'Grande',
             'muy grande' => 'Muy grande',
+        ];
+    }
+
+    public static function sexosDisponibles()
+    {
+        return [
+            'Hembra' => 'Hembra',
+            'Macho' => 'Macho',
         ];
     }
 
@@ -214,6 +223,28 @@ class Animales extends \yii\db\ActiveRecord
     public function desasignarColores()
     {
         return AnimalesColores::deleteAll(['animal_id' => $this->id]);
+    }
+
+    public function coloresAsignadosId()
+    {
+        $coloresId = [];
+
+        foreach ($this->colors as $value) {
+            $coloresId[] = $value->id;
+        }
+
+        return $coloresId;
+    }
+
+    public function razasAsignadasId()
+    {
+        $razasId = [];
+
+        foreach ($this->razas as $value) {
+            $razasId[] = $value->id;
+        }
+
+        return $razasId;
     }
 
     /**

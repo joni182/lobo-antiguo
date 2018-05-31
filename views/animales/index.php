@@ -38,15 +38,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 </span>
         </div>
     </div>
-    <div class="row">
+    <div>
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     </div>
     <div class="row">
         <?= ListView::widget([
             'dataProvider' => $dataProvider,
             'itemView' => '_ficha',
-            ]) ?>
-        </div>
+            ])
+        ?>
+    </div>
 
 
     <!-- <?= GridView::widget([

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\Especies;
+use app\models\Animales;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -37,28 +38,37 @@ $this->registerJs($js);
         'method' => 'get',
         'options' => [
             'style' => 'display:none;',
-            'class' => 'col-sm-offset-3 col-md-6 '
         ],
+    ]);
 
-    ]); ?>
+        $opcionSeleccionar = ['' => ''];
+    ?>
+    <div class="row">
+    <div class="col-md-5 ">
 
     <?= $form->field($model, 'nombre') ?>
 
     <?= $form->field($model, 'sexo')
-        ->dropDownList(
-            [
-                '' => '--Seleccionar--',
-                'Hembra' => 'Hembra',
-                'Macho' => 'Macho',
-            ]
-        )
+        ->dropDownList(array_merge($opcionSeleccionar, Animales::sexosDisponibles()))
+    ?>
+
+    <?= $form->field($model, 'tamanio')
+        ->dropDownList(array_merge($opcionSeleccionar, Animales::tamaniosDisponibles()))
     ?>
 
     <?= $form->field($model, 'peso')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ppp')->dropDownList(['' => '--Seleccionar--', false => 'No', true => 'Si']) ?>
+    <?= $form->field($model, 'ppp')
+        ->dropDownList(array_merge($opcionSeleccionar,[
+            false => 'No',
+            true => 'Si'
+            ]))
+    ?>
+
 
     <?= $form->field($model, 'chip') ?>
+</div>
+<div class="col-sm-offset-1 col-md-5 ">
 
     <?= $form->field($model, 'colores_rec[]')->checkboxList(\app\models\Colores::nombres());  ?>
 
@@ -79,10 +89,15 @@ $this->registerJs($js);
 
     <?php // echo $form->field($model, 'created_at') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Limpiar', ['class' => 'btn btn-default']) ?>
+</div>
+
+
+</div>
+<div class="row">
+    <div class="form-group col-sm-offset-5 col-md-1">
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-xl btn-primary btn-search']) ?>
     </div>
+</div>
 
     <?php ActiveForm::end(); ?>
 
