@@ -68,7 +68,7 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'chip') ?>
 </div>
-<div class="col-sm-offset-1 col-md-5 ">
+<div class="col-sm-offset-2 col-md-5 ">
 
     <?= $form->field($model, 'colores_rec[]')->checkboxList(\app\models\Colores::nombres());  ?>
 
@@ -93,9 +93,9 @@ $this->registerJs($js);
 
 
 </div>
-<div class="row">
-    <div class="form-group col-sm-offset-5 col-md-1">
-        <?= Html::submitButton('Buscar', ['class' => 'btn btn-xl btn-primary btn-search']) ?>
+<div class="centrado">
+    <div>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-xl btn-primary buscador']) ?>
     </div>
 </div>
 

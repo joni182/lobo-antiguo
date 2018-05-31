@@ -26,12 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('Registrar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Gestionar Especies y Razas', ['especies-razas/index'], ['class' => 'btn btn-info']) ?>
             </div>
-            <div class="search-button">
-                <?= Html::img('search.png',[
-                    'class' => 'col-sm-offset-4',
+        </div>
+            <div class="centrado">
+
+            <div class="search-button" >
+                <?= Html::img('search.png',
+                [
+                    'style' => 'margin:2px',
                     'alt' => 'Buscar animal',
                     'width' => '35',
-                    'height' => '35'])
+                    'height' => '35'
+                ])
                 ?>
                 <span class="">
                     Buscar Animal
