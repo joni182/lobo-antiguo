@@ -4,10 +4,15 @@
 
 $this->title = 'My Yii Application';
 ?>
+<?php
+    $dropbox = (new \app\components\DBox)->getDropbox();
+    $fileMetadata = $dropbox->getMetadata("/hola_mundo.txt");
+
+?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1><?= $fileMetadata->getName()  ?></h1>
 
         <p class="lead">You have successfully created your Yii-powered application.</p>
 
