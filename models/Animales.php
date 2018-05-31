@@ -3,20 +3,25 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Url;
+use yii\imagine\Image;
 
 /**
  * This is the model class for table "animales".
  *
  * @property int $id
  * @property string $nombre
- * @property int $raza_id
- * @property int $especie_id
+ * @property string $peso
+ * @property bool $ppp
  * @property string $chip
+ * @property string $sexo
  * @property string $observaciones
  * @property string $created_at
  *
- * @property Especies $especie
- * @property Razas $raza
+ * @property AnimalesColores[] $animalesColores
+ * @property Colores[] $colors
+ * @property AnimalesRazas[] $animalesRazas
+ * @property Razas[] $razas
  * @property EnfermedadesAnimales[] $enfermedadesAnimales
  * @property Enfermedades[] $enfermedads
  * @property Tratamientos[] $tratamientos
@@ -26,6 +31,10 @@ use Yii;
  */
 class Animales extends \yii\db\ActiveRecord
 {
+    public $razas_rec;
+    public $colores_rec;
+    public $fotos;
+
     /**
      * {@inheritdoc}
      */
@@ -34,21 +43,28 @@ class Animales extends \yii\db\ActiveRecord
         return 'animales';
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['fotos', 'razas_rec', 'colores_rec']);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['nombre', 'raza_id', 'especie_id'], 'required'],
-            [['raza_id', 'especie_id'], 'default', 'value' => null],
-            [['raza_id', 'especie_id'], 'integer'],
-            [['observaciones'], 'string'],
-            [['created_at'], 'safe'],
+            [['peso'], 'filter', 'filter' => function ($value) {
+                return str_replace(',', '.', $value);
+            }],
+            [['nombre'], 'required'],
+            [['chip', 'ppp'], 'default'],
+            [['ppp'], 'boolean'],
+            [['observaciones', 'tamanio'], 'string'],
+            [['sexo', 'peso', 'created_at', 'razas_rec', 'colores_rec'], 'safe'],
             [['nombre', 'chip'], 'string', 'max' => 255],
             [['chip'], 'unique'],
-            [['especie_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_id' => 'id']],
-            [['raza_id'], 'exist', 'skipOnError' => true, 'targetClass' => Razas::className(), 'targetAttribute' => ['raza_id' => 'id']],
+            [['fotos'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxFiles' => 6],
         ];
     }
 
@@ -58,30 +74,209 @@ class Animales extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'nombre' => 'Nombre',
-            'raza_id' => 'Raza ID',
-            'especie_id' => 'Especie ID',
+            'ppp' => '¿Potencialmente peligroso?',
             'chip' => 'Chip',
+            'tamanio' => 'Tamaño',
             'observaciones' => 'Observaciones',
-            'created_at' => 'Created At',
+            'created_at' => 'Registrado',
+            'colores_rec' => 'Colores',
+            'razas_rec' => 'Razas',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEspecie()
+    public static function tamaniosDisponibles()
     {
-        return $this->hasOne(Especies::className(), ['id' => 'especie_id'])->inverseOf('animales');
+        return [
+            'pequenio' => 'Pequeño',
+            'mediano' => 'Mediano',
+            'grande' => 'Grande',
+            'muy grande' => 'Muy grande',
+        ];
+    }
+
+    public static function sexosDisponibles()
+    {
+        return [
+            'Hembra' => 'Hembra',
+            'Macho' => 'Macho',
+        ];
+    }
+
+    public function borrarFotoPrincipal()
+    {
+        $fotoPrincipal = Yii::getAlias('@fotoprincipal') . "{$this->id}-principal.jpg";
+        if (file_exists($fotoPrincipal)) {
+            return unlink($fotoPrincipal);
+        }
+    }
+
+    public function establecerFotoPrincipal($ruta)
+    {
+        $carpetaPrincipal = Yii::getAlias('@fotoprincipal');
+        if (!file_exists($carpetaPrincipal)) {
+            mkdir($carpetaPrincipal);
+        }
+        $principal = "$carpetaPrincipal/{$this->id}-principal.jpg";
+
+        return copy($ruta, $principal);
+    }
+
+    public function upload()
+    {
+        if ($this->fotos === [0 => '']) {
+            return true;
+        }
+
+        $i = 0;
+
+        foreach ($this->fotos as $foto) {
+            while (file_exists($nombre = "uploads/{$this->id}-{$i}.jpg")) {
+                $i++;
+            }
+            $nombre = Yii::getAlias('@uploads') . $this->id . '-' . $i++ . '.' . 'jpg';
+            $res = $foto->saveAs($nombre);
+            if ($res) {
+                Image::thumbnail($nombre, 450, null)->save($nombre);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Devuelve la ruta de la imagen principal que identifica al animal, si no
+     * existe devuelve una imagen por defecto.
+     * @return string La ruta a la imagen principal
+     */
+    public function getRutaPrincipal():string
+    {
+        if (file_exists(($fotoPrincipal = Yii::getAlias('@fotoprincipal') . "{$this->id}-principal.jpg"))) {
+            return "uploads/fotos_principal/{$this->id}-principal.jpg";
+        }
+        return 'uploads/default.jpg';
+    }
+    public function getRutasImagenes()
+    {
+        $imagenes = static::obtenerListadoDeImagenes($this->id);
+
+        if ($imagenes !== []) {
+            return $imagenes;
+        }
+
+        return [Url::to('/uploads/') . 'default.jpg'];
+    }
+
+    public static function obtenerListadoDeImagenes($id = '.+', $directorio = 'uploads/')
+    {
+        // Array en el que obtendremos los resultados
+        $res = [];
+
+        // Agregamos la barra invertida al final en caso de que no exista
+        if (substr($directorio, -1) != '/') {
+            $directorio .= '/';
+        }
+
+        // Creamos un puntero al directorio y obtenemos el listado de archivos
+        $dir = @dir($directorio) or die("getFileList: Error abriendo el directorio $directorio para leerlo");
+        while (($archivo = $dir->read()) !== false) {
+            // Obviamos los archivos ocultos
+            if ($archivo[0] == '.') {
+                continue;
+            }
+            if (is_dir($directorio . $archivo)) {
+            } elseif (is_readable($directorio . $archivo) && preg_match("/^$id\-.*\.jpg$/", $archivo)) {
+                $res[] = $directorio . $archivo;
+            }
+        }
+        $dir->close();
+        return $res;
+    }
+
+    public function asignarRazas()
+    {
+        if ($this->razas_rec) {
+            foreach ($this->razas_rec as $raza_id) {
+                $animalRaza = new AnimalesRazas();
+                $animalRaza->attributes = ['animal_id' => $this->id, 'raza_id' => $raza_id];
+                $animalRaza->save();
+                // $p = AnimalesRazas::findOne(['animal_id' => $this->id]);
+            }
+        }
+    }
+
+    public function desasignarRazas()
+    {
+        return AnimalesRazas::deleteAll(['animal_id' => $this->id]);
+    }
+
+    public function asignarColores()
+    {
+        if ($this->colores_rec) {
+            foreach ($this->colores_rec as $color_id) {
+                $animalColor = new AnimalesColores();
+                $animalColor->attributes = ['animal_id' => $this->id, 'color_id' => $color_id];
+                $animalColor->save();
+            }
+        }
+    }
+
+    public function desasignarColores()
+    {
+        return AnimalesColores::deleteAll(['animal_id' => $this->id]);
+    }
+
+    public function coloresAsignadosId()
+    {
+        $coloresId = [];
+
+        foreach ($this->colors as $value) {
+            $coloresId[] = $value->id;
+        }
+
+        return $coloresId;
+    }
+
+    public function razasAsignadasId()
+    {
+        $razasId = [];
+
+        foreach ($this->razas as $value) {
+            $razasId[] = $value->id;
+        }
+
+        return $razasId;
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRaza()
+    public function getAnimalesColores()
     {
-        return $this->hasOne(Razas::className(), ['id' => 'raza_id'])->inverseOf('animales');
+        return $this->hasMany(AnimalesColores::className(), ['animal_id' => 'id'])->inverseOf('animal');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getColors()
+    {
+        return $this->hasMany(Colores::className(), ['id' => 'color_id'])->viaTable('animales_colores', ['animal_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnimalesRazas()
+    {
+        return $this->hasMany(AnimalesRazas::className(), ['animal_id' => 'id'])->inverseOf('animal');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRazas()
+    {
+        return $this->hasMany(Razas::className(), ['id' => 'raza_id'])->viaTable('animales_razas', ['animal_id' => 'id']);
     }
 
     /**

@@ -10,6 +10,7 @@ if (($getenv = getenv('YII_ENV')) !== 'prod'
 define('YII_ENV', $getenv ?: 'dev');
 define('YII_DEBUG', getenv('YII_DEBUG') ?: YII_ENV == 'dev');
 
+
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';

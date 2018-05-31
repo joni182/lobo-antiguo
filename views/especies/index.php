@@ -1,7 +1,9 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
+
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\EspeciesSearch */
@@ -12,23 +14,32 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="especies-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Especies', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'nombre',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            'nombre:text:Especie',
+            [
+                    'class' => 'yii\grid\ActionColumn',
+                    'buttons' => [
+                        'view' => function ($url, $model, $key) {
+                        return Html::a('Ver',Url::to(['especies/view','id'=> $model->id]),['class' => 'btn btn-xs btn-success']);
+                        },
+                        'update' => function ($url, $model, $key) {
+                        return Html::a('Mod',Url::to(['especies/update','id'=> $model->id]),['class' => 'btn btn-xs btn-info']);
+                        },
+                        'delete' => function ($url, $model, $key) {
+                        return Html::a('Borrar',Url::to(['especies/delete','id'=> $model->id]),[
+                            'class' => 'btn btn-xs btn-danger',
+                            'data' => [
+                                'method' => 'post',
+                            ],
+                        ]);
+                        },
+                    ],
+                ],
         ],
     ]); ?>
 </div>

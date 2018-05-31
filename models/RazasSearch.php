@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Razas;
 
 /**
  * RazasSearch represents the model behind the search form of `app\models\Razas`.
@@ -19,8 +17,13 @@ class RazasSearch extends Razas
     {
         return [
             [['id', 'especie_id'], 'integer'],
-            [['nombre'], 'safe'],
+            [['nombre', 'especie.nombre'], 'safe'],
         ];
+    }
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['especie.nombre']);
     }
 
     /**
@@ -33,7 +36,7 @@ class RazasSearch extends Razas
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -57,6 +60,13 @@ class RazasSearch extends Razas
             return $dataProvider;
         }
 
+        $query->joinWith('especie e');
+
+        $dataProvider->sort->attributes['especie.nombre'] = [
+            'asc' => ['e.nombre' => SORT_ASC],
+            'desc' => ['e.nombre' => SORT_DESC],
+        ];
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -64,6 +74,7 @@ class RazasSearch extends Razas
         ]);
 
         $query->andFilterWhere(['ilike', 'nombre', $this->nombre]);
+        $query->andFilterWhere(['ilike', 'e.nombre', $this->getAttribute('especie.nombre')]);
 
         return $dataProvider;
     }

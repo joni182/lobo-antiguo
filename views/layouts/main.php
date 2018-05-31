@@ -1,3 +1,4 @@
+
 <?php
 
 /* @var $this \yii\web\View */
@@ -28,8 +29,9 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+     Yii::$app->name = 'Lobo';
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => '<img src="navbar-logo.png" style="margin-right:10px" class="pull-left"/>'.Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -39,8 +41,22 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            [
+                'label' => 'Animales',
+                'url' => ['/animales/index'],
+                'items' => [
+                    [
+                        'label' => 'Animales',
+                        'url' => ['/animales/index'],
+                    ],
+                    [
+                        'label' => 'Razas',
+                        'url' => ['/especies-razas/index'],
+                    ],
+                ]
+            ],
+            ['label' => 'Animales-Razas', 'url' => ['/animales-razas/index']],
+            ['label' => 'Animales-Colores', 'url' => ['/animales-colores/index']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -69,7 +85,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Lobo <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

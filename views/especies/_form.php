@@ -10,14 +10,20 @@ use yii\widgets\ActiveForm;
 
 <div class="especies-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'registrar-especie',
+    ]); ?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    <?= $form->field($model, 'nombre')->label('Nueva Especie')->textInput(['maxlength' => true]) ?>
 
     <?php ActiveForm::end(); ?>
+
+    <?= Html::input('submit',null,'Guardar', [
+        'id' => 'submitEspecie',
+        'class' => 'btn btn-success',
+        'data' => [
+            'tipo' => 'especies',
+        ],
+    ]) ?>
 
 </div>

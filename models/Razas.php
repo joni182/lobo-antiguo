@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "razas".
  *
@@ -51,12 +49,29 @@ class Razas extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function nombres($especie_id = '')
+    {
+        return static::find()
+            ->select('nombre')
+            ->andFilterWhere(['especie_id' => $especie_id])
+            ->indexBy('id')
+            ->column();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnimalesRazas()
+    {
+        return $this->hasMany(AnimalesRazas::className(), ['raza_id' => 'id'])->inverseOf('raza');
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getAnimales()
     {
-        return $this->hasMany(Animales::className(), ['raza_id' => 'id'])->inverseOf('raza');
+        return $this->hasMany(Animales::className(), ['id' => 'animal_id'])->viaTable('animales_razas', ['raza_id' => 'id']);
     }
 
     /**

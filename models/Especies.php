@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "especies".
  *
@@ -33,6 +31,14 @@ class Especies extends \yii\db\ActiveRecord
             [['nombre'], 'string', 'max' => 255],
             [['nombre'], 'unique'],
         ];
+    }
+
+    public static function nombres()
+    {
+        return static::find()
+            ->select('nombre')
+            ->indexBy('id')
+            ->column();
     }
 
     /**
