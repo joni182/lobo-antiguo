@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\components\DBox;
+use DateTime;
 use Yii;
 use yii\helpers\Url;
 use yii\imagine\Image;
@@ -31,6 +33,9 @@ use yii\imagine\Image;
  */
 class Animales extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
     public $razas_rec;
     public $colores_rec;
     public $fotos;
@@ -103,14 +108,6 @@ class Animales extends \yii\db\ActiveRecord
         ];
     }
 
-    public function borrarFotoPrincipal()
-    {
-        $fotoPrincipal = Yii::getAlias('@fotoprincipal') . "{$this->id}-principal.jpg";
-        if (file_exists($fotoPrincipal)) {
-            return unlink($fotoPrincipal);
-        }
-    }
-
     public function establecerFotoPrincipal($ruta)
     {
         $carpetaPrincipal = Yii::getAlias('@fotoprincipal');
@@ -122,23 +119,36 @@ class Animales extends \yii\db\ActiveRecord
         return copy($ruta, $principal);
     }
 
+    public function borrarFotoPrincipal()
+    {
+        $fotoPrincipal = Yii::getAlias('@fotoprincipal') . "{$this->id}-principal.jpg";
+        if (file_exists($fotoPrincipal)) {
+            return unlink($fotoPrincipal);
+        }
+    }
+
     public function upload()
     {
+        $dBox = new DBox();
+        $dBox->aseguraExistsCarpeta('/imagenes');
+        $ruta = "/imagenes/{$this->id}";
+        $dBox->aseguraExistsCarpeta($ruta);
+
         if ($this->fotos === [0 => '']) {
+            if ($this->scenario == self::SCENARIO_CREATE) {
+            }
             return true;
         }
 
         $i = 0;
+        $d = (new DateTime())->format('Y-m-d\TH:i:s.u');
 
         foreach ($this->fotos as $foto) {
-            while (file_exists($nombre = "uploads/{$this->id}-{$i}.jpg")) {
-                $i++;
-            }
-            $nombre = Yii::getAlias('@uploads') . $this->id . '-' . $i++ . '.' . 'jpg';
-            $res = $foto->saveAs($nombre);
-            if ($res) {
-                Image::thumbnail($nombre, 450, null)->save($nombre);
-            }
+            $dBox->subirArchivo($foto->tempName . '/' . $foto->name, $this->id, $d . $i++ . '.jpg');
+
+            // if ($res) {
+            //     Image::thumbnail($nombre, 450, null)->save($nombre);
+            // }
         }
         return true;
     }
@@ -246,6 +256,7 @@ class Animales extends \yii\db\ActiveRecord
 
         return $razasId;
     }
+
 
     /**
      * @return \yii\db\ActiveQuery
